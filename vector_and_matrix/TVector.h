@@ -1,6 +1,7 @@
+// Copyright 2023 Vasenkov Andrey
 #ifndef _TVECTOR_H_
 #define _TVECTOR_H_
-// Copyright 2023 Vasenkov Andrey
+
 
 /*
 RU:

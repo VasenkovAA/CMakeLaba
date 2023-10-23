@@ -1,6 +1,7 @@
+// Copyright 2023 Vasenkov Andrey
 #ifndef _BITFILD_H_
 #define _BITFILD_H_
-// Copyright 2023 Vasenkov Andrey
+
 #define BIT_IN_BYTE 8
 #include <iostream>
 class TBitField {
