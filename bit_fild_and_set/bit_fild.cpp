@@ -1,6 +1,6 @@
-// Copyright 2023 Vasenkov Andrey
+п»ї// Copyright 2023 Vasenkov Andrey
 
-#include "bit_fild.h"
+#include "..\bit_fild_and_set\bit_fild.h"
 TBitField::TBitField(unsigned int size) {
     this->size = size;
     // calculate array size in ints
@@ -118,6 +118,6 @@ void TBitField::clearBit(int index) {
 bool TBitField::getBit(int index) const {
     int intIndex = index / kBitsInByte_;
     int bitIndex = index % kBitsInByte_;
-    // возвращаем значение бита
+    // РІРѕР·РІСЂР°С‰Р°РµРј Р·РЅР°С‡РµРЅРёРµ Р±РёС‚Р°
     return (data[intIndex] & (1 << bitIndex)) != 0;
 }
