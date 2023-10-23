@@ -4,6 +4,7 @@
 
 #define BIT_IN_BYTE 8
 #include <iostream>
+#include <algorithm>
 class TBitField {
 private:
     unsigned int size; // размер битового поля в битах

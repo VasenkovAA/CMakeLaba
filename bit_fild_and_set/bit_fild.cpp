@@ -1,14 +1,13 @@
 // Copyright 2023 Vasenkov Andrey
+
 #include "bit_fild.h"
-#include <iostream>
-#include <algorithm>
 TBitField::TBitField(unsigned int size) {
     this->size = size;
-    // вычисляем размер массива в int-ах
-    int dataSize = (size + kBitsInByte_-1) / kBitsInByte_; 
+    // calculate array size in ints
+    int dataSize = (size + kBitsInByte_-1) / kBitsInByte_;
     data = new unsigned int[dataSize];
     for (int i = 0; i < dataSize; i++) {
-        data[i] = 0;  // инициализируем массив нулями
+        data[i] = 0;  // initialize the array with zeros
     }
 }
 
@@ -49,7 +48,7 @@ TBitField& TBitField::operator=(const TBitField& other) {
         int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
         data = new unsigned int[dataSize];
         for (int i = 0; i < dataSize; i++) {
-            data[i] = other.data[i];  // инициализируем массив нулями
+            data[i] = other.data[i];  // initialize the array with zeros
         }
     }
     return *this;
@@ -104,16 +103,16 @@ TBitField::~TBitField() {
 }
 
 void TBitField::setBit(int index) {
-    // индекс int-а, в котором находится нужный бит
+    // index of the int where the required bit is located
     int intIndex = index / kBitsInByte_;
-    int bitIndex = index % kBitsInByte_;  // индекс бита внутри int-а
-    data[intIndex] |= (1 << bitIndex);  // устанавливаем бит
+    int bitIndex = index % kBitsInByte_;  // bit index within an int
+    data[intIndex] |= (1 << bitIndex);  // set the bit
 }
 
 void TBitField::clearBit(int index) {
     int intIndex = index / kBitsInByte_;
     int bitIndex = index % kBitsInByte_;
-    data[intIndex] &= ~(1 << bitIndex);  // сбрасываем бит
+    data[intIndex] &= ~(1 << bitIndex);  // return the bit value
 }
 
 bool TBitField::getBit(int index) const {
