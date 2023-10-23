@@ -1,6 +1,6 @@
+// Copyright 2023 Vasenkov Andrey
 #ifndef _SET_H_
 #define _SET_H_
-// Copyright 2023 Vasenkov Andrey
 
 /*
 RU:

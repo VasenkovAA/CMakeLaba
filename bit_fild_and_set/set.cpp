@@ -1,3 +1,4 @@
+// Copyright 2023 Vasenkov Andrey
 #include "set.h"
 
 TSet::TSet(int mp) : bitField(mp), maxPower(mp) {}

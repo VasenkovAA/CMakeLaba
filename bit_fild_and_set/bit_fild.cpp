@@ -1,3 +1,4 @@
+// Copyright 2023 Vasenkov Andrey
 #include "bit_fild.h"
 #include <iostream>
 TBitField::TBitField(unsigned int size)
