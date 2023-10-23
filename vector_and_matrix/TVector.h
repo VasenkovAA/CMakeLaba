@@ -56,7 +56,6 @@ using namespace std;
 template <typename T>
 class TVector {
 public:
-
     TVector() : m_size(0), m_capacity(0), m_data(nullptr) {}
     TVector(size_t size) : m_size(size), m_capacity(size), m_data(new T[size]) {
         if (size > MAX_VECTOR_SIZE) {
