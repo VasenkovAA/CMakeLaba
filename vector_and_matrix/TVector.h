@@ -46,10 +46,6 @@ Translated with www.DeepL.com/Translator (free version)
 
 */
 
-
-
-
-
 #include <iostream>
 #define MAX_VECTOR_SIZE 1000
 using namespace std;
