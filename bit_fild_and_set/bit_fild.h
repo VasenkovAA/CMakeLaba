@@ -1,35 +1,33 @@
-// Copyright 2023 Vasenkov Andrey
-#ifndef _BITFILD_H_
+п»ї#ifndef _BITFILD_H_
 #define _BITFILD_H_
 
 #define BIT_IN_BYTE 8
+
 #include <iostream>
+
 #include <algorithm>
+
 class TBitField {
-private:
-    unsigned int size; // размер битового поля в битах
-    unsigned int* data; // указатель на массив, хранящий биты
-    const short kBitsInByte_ = (BIT_IN_BYTE * sizeof(int));
-public:
-    TBitField(unsigned int size);
+private: unsigned int size; // СЂР°Р·РјРµСЂ Р±РёС‚РѕРІРѕРіРѕ РїРѕР»СЏ РІ Р±РёС‚Р°С…
+     unsigned int* data; // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РјР°СЃСЃРёРІ, С…СЂР°РЅСЏС‰РёР№ Р±РёС‚С‹
+     const short kBitsInByte_ = (BIT_IN_BYTE * sizeof(int));
+public: TBitField(unsigned int size);
 
     TBitField();
-
     TBitField(const TBitField& other);
-
     TBitField(TBitField&& other) noexcept;
 
-    TBitField& operator=(TBitField&& other)noexcept;
+    TBitField& operator = (TBitField&& other) noexcept;
 
-    TBitField& operator=(const TBitField& other);
+    TBitField& operator = (const TBitField& other);
 
-    bool operator==(const TBitField& other) const;
+    bool operator == (const TBitField& other) const;
 
-    bool operator!=(const TBitField& other) const;
+    bool operator != (const TBitField& other) const;
 
-    TBitField operator&(const TBitField& other) const;
+    TBitField operator & (const TBitField& other) const;
 
-    TBitField operator|(const TBitField& other) const;
+    TBitField operator | (const TBitField& other) const;
 
     TBitField operator~() const;
 
@@ -45,7 +43,8 @@ public:
 
     bool getBit(int index) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const TBitField& bitField) {
+    friend std::ostream& operator << (std::ostream& os,
+        const TBitField& bitField) {
         for (int i = 0; i <= bitField.size - 1; i++) {
             os << (bitField.getBit(i) ? '1' : '0');
         }
