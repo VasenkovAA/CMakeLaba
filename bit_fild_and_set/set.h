@@ -1,41 +1,41 @@
+п»ї// Copyright 2023 Vasenkov Andrey
 #ifndef _SET_H_
 #define _SET_H_
-// Copyright 2023 Vasenkov Andrey
 
 /*
 RU:
-Класс TSet имеет следующие методы и поля: Поля:
+РљР»Р°СЃСЃ TSet РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёРµ РјРµС‚РѕРґС‹ Рё РїРѕР»СЏ: РџРѕР»СЏ:
 
-    maxPower - максимальная мощность множества
-    bitField - битовое поле для хранения множества
+    maxPower - РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РјРѕС‰РЅРѕСЃС‚СЊ РјРЅРѕР¶РµСЃС‚РІР°
+    bitField - Р±РёС‚РѕРІРѕРµ РїРѕР»Рµ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РјРЅРѕР¶РµСЃС‚РІР°
 
-Методы:
+РњРµС‚РѕРґС‹:
 
-    TSet(int mp) - конструктор, который принимает максимальную мощность множества в качестве аргумента
-    TSet(const TSet& s) - конструктор копирования
-    operator TBitField() - преобразование типа к битовому полю
-    size_t GetMaxPower() const noexcept - метод, который возвращает максимальную мощность множества
-    void InsElem(size_t Elem) - метод, который включает элемент в множество
-    void DelElem(size_t Elem) - метод, который удаляет элемент из множества
-    bool IsMember(size_t Elem) const - метод, который проверяет наличие элемента в множестве
-    void insert(size_t Elem) - метод, который включает элемент в множество
-    TSet operator+ (const int Elem) - метод, который выполняет объединение множества с элементом
-    TSet operator- (const int Elem) - метод, который выполняет разность множества с элементом
-    TSet operator+ (const TSet& s) - метод, который выполняет объединение множеств
-    TSet operator* (const TSet& s) - метод, который выполняет пересечение множеств
-    TSet operator~ () - метод, который выполняет дополнение множества
-    bool operator== (const TSet& s) const - метод, который проверяет равенство множеств
-    bool operator!= (const TSet& s) const - метод, который проверяет неравенство множеств
-    TSet& operator=(const TSet& s) - оператор присваивания
-    friend std::istream& operator>>(std::istream& in, TSet& bf) - дружественная функция, которая перегружает оператор ввода
-    friend std::ostream& operator<<(std::ostream& out, const TSet& bf) - дружественная функция, которая перегружает оператор вывода
+    TSet(int mp) - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РєРѕС‚РѕСЂС‹Р№ РїСЂРёРЅРёРјР°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РјРѕС‰РЅРѕСЃС‚СЊ РјРЅРѕР¶РµСЃС‚РІР° РІ РєР°С‡РµСЃС‚РІРµ Р°СЂРіСѓРјРµРЅС‚Р°
+    TSet(const TSet& s) - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+    operator TBitField() - РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ С‚РёРїР° Рє Р±РёС‚РѕРІРѕРјСѓ РїРѕР»СЋ
+    size_t GetMaxPower() const noexcept - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІРѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РјРѕС‰РЅРѕСЃС‚СЊ РјРЅРѕР¶РµСЃС‚РІР°
+    void InsElem(size_t Elem) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІРєР»СЋС‡Р°РµС‚ СЌР»РµРјРµРЅС‚ РІ РјРЅРѕР¶РµСЃС‚РІРѕ
+    void DelElem(size_t Elem) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ СѓРґР°Р»СЏРµС‚ СЌР»РµРјРµРЅС‚ РёР· РјРЅРѕР¶РµСЃС‚РІР°
+    bool IsMember(size_t Elem) const - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРІРµСЂСЏРµС‚ РЅР°Р»РёС‡РёРµ СЌР»РµРјРµРЅС‚Р° РІ РјРЅРѕР¶РµСЃС‚РІРµ
+    void insert(size_t Elem) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІРєР»СЋС‡Р°РµС‚ СЌР»РµРјРµРЅС‚ РІ РјРЅРѕР¶РµСЃС‚РІРѕ
+    TSet operator+ (const int Elem) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅСЏРµС‚ РѕР±СЉРµРґРёРЅРµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІР° СЃ СЌР»РµРјРµРЅС‚РѕРј
+    TSet operator- (const int Elem) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅСЏРµС‚ СЂР°Р·РЅРѕСЃС‚СЊ РјРЅРѕР¶РµСЃС‚РІР° СЃ СЌР»РµРјРµРЅС‚РѕРј
+    TSet operator+ (const TSet& s) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅСЏРµС‚ РѕР±СЉРµРґРёРЅРµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
+    TSet operator* (const TSet& s) - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅСЏРµС‚ РїРµСЂРµСЃРµС‡РµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
+    TSet operator~ () - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІС‹РїРѕР»РЅСЏРµС‚ РґРѕРїРѕР»РЅРµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІР°
+    bool operator== (const TSet& s) const - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРІРµСЂСЏРµС‚ СЂР°РІРµРЅСЃС‚РІРѕ РјРЅРѕР¶РµСЃС‚РІ
+    bool operator!= (const TSet& s) const - РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРІРµСЂСЏРµС‚ РЅРµСЂР°РІРµРЅСЃС‚РІРѕ РјРЅРѕР¶РµСЃС‚РІ
+    TSet& operator=(const TSet& s) - РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+    friend std::istream& operator>>(std::istream& in, TSet& bf) - РґСЂСѓР¶РµСЃС‚РІРµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ, РєРѕС‚РѕСЂР°СЏ РїРµСЂРµРіСЂСѓР¶Р°РµС‚ РѕРїРµСЂР°С‚РѕСЂ РІРІРѕРґР°
+    friend std::ostream& operator<<(std::ostream& out, const TSet& bf) - РґСЂСѓР¶РµСЃС‚РІРµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ, РєРѕС‚РѕСЂР°СЏ РїРµСЂРµРіСЂСѓР¶Р°РµС‚ РѕРїРµСЂР°С‚РѕСЂ РІС‹РІРѕРґР°
 
-    TSet(int mp) - конструктор, который принимает максимальную мощность множества в качестве аргумента
-    TSet(const TSet& s) - конструктор копирования
+    TSet(int mp) - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РєРѕС‚РѕСЂС‹Р№ РїСЂРёРЅРёРјР°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РјРѕС‰РЅРѕСЃС‚СЊ РјРЅРѕР¶РµСЃС‚РІР° РІ РєР°С‡РµСЃС‚РІРµ Р°СЂРіСѓРјРµРЅС‚Р°
+    TSet(const TSet& s) - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 
-Также в классе TSet определены операторы присваивания и перегружены операторы ввода и вывода. 
-Использование конструкторов в классе TSet позволяет инициализировать данные объектов класса при их создании. 
-Это удобно и позволяет избежать ошибок при работе с объектами класса.
+РўР°РєР¶Рµ РІ РєР»Р°СЃСЃРµ TSet РѕРїСЂРµРґРµР»РµРЅС‹ РѕРїРµСЂР°С‚РѕСЂС‹ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ Рё РїРµСЂРµРіСЂСѓР¶РµРЅС‹ РѕРїРµСЂР°С‚РѕСЂС‹ РІРІРѕРґР° Рё РІС‹РІРѕРґР°.
+РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ РІ РєР»Р°СЃСЃРµ TSet РїРѕР·РІРѕР»СЏРµС‚ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РґР°РЅРЅС‹Рµ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃР° РїСЂРё РёС… СЃРѕР·РґР°РЅРёРё.
+Р­С‚Рѕ СѓРґРѕР±РЅРѕ Рё РїРѕР·РІРѕР»СЏРµС‚ РёР·Р±РµР¶Р°С‚СЊ РѕС€РёР±РѕРє РїСЂРё СЂР°Р±РѕС‚Рµ СЃ РѕР±СЉРµРєС‚Р°РјРё РєР»Р°СЃСЃР°.
 */
 
 /*
@@ -76,36 +76,29 @@ This is convenient and allows you to avoid errors when working with class object
 */
 
 #include <iostream>
+
 #include "..\bit_fild_and_set\bit_fild.h"
 
 class TSet {
-private:
-	size_t maxPower;                       // максимальная мощность множества
-	TBitField bitField;                    // битовое поле для хранения множества
-public:
-	TSet(int mp);
-	TSet(const TSet& s);
-	operator TBitField();                  // преобразование типа к битовому полю
-
-	size_t GetMaxPower() const noexcept;
-
-	void InsElem(size_t Elem);            // включить элемент в множество
-	void DelElem(size_t Elem);            // удалить элемент из множества
-	bool IsMember(size_t Elem) const;     // проверить наличие элемента в множестве
-
-	void insert(size_t Elem);
-	TSet operator+ (const int Elem);       // объединение с элементом
-	TSet operator- (const int Elem);       // разность с элементом
-	TSet operator+ (const TSet& s);        // объединение
-	TSet operator* (const TSet& s);        // пересечение
-	TSet operator~ ();                     // дополнение
-
-	bool operator== (const TSet& s) const;
-	bool operator!= (const TSet& s) const;
-	TSet& operator=(const TSet& s);
-
-	friend std::istream& operator>>(std::istream& in, TSet& bf);
-	friend std::ostream& operator<<(std::ostream& out, const TSet& bf);
+private: size_t maxPower;
+    TBitField bitField;
+public: TSet(int mp);
+    TSet(const TSet& s);
+    operator TBitField();
+    size_t GetMaxPower() const noexcept;
+    void InsElem(size_t Elem);
+    void DelElem(size_t Elem);
+    bool IsMember(size_t Elem) const;
+    void insert(size_t Elem);
+    TSet operator + (const int Elem);
+    TSet operator - (const int Elem);
+    TSet operator + (const TSet& s);
+    TSet operator * (const TSet& s);
+    TSet operator~();
+    bool operator == (const TSet& s) const;
+    bool operator != (const TSet& s) const;
+    TSet& operator = (const TSet& s);
+    friend std::istream& operator >> (std::istream& in, TSet& bf);
+    friend std::ostream& operator << (std::ostream& out, const TSet& bf);
 };
-
-#endif  
+#endif

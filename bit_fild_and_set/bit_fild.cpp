@@ -1,42 +1,38 @@
+п»ї  // Copyright 2023 Vasenkov Andrey
+
 #include "bit_fild.h"
-#include <iostream>
-TBitField::TBitField(unsigned int size)
-{
+
+TBitField::TBitField(unsigned int size) {
     this->size = size;
-    //if (size >= INT_MAX - kBitsInByte_ + 1) { throw std::logic_error("Invalid index, index > INT_MAX-31"); }
-    int dataSize = (size + kBitsInByte_-1) / kBitsInByte_; // вычисляем размер массива в int-ах
-    //std::cout << dataSize <<" "<< INT_MAX << std::endl;
+    // calculate array size in ints
+    int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
     data = new unsigned int[dataSize];
     for (int i = 0; i < dataSize; i++) {
-        data[i] = 0; // инициализируем массив нулями
+        data[i] = 0; //initialize the array with zeros
     }
 }
 
-TBitField::TBitField()
-{
+TBitField::TBitField() {
     size = 0;
     data = nullptr;
 }
 
-TBitField::TBitField(const TBitField& other)
-{
+TBitField::TBitField(const TBitField& other) {
     size = other.size;
-    int dataSize = (size + kBitsInByte_-1) / kBitsInByte_;
+    int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
     data = new unsigned int[dataSize];
     for (int i = 0; i < dataSize; i++) {
         data[i] = other.data[i];
     }
 }
 
-TBitField::TBitField(TBitField&& other) noexcept
-{
+TBitField::TBitField(TBitField&& other) noexcept {
     size = other.size;
     data = other.data;
     other.data = nullptr;
 }
 
-TBitField& TBitField::operator=(TBitField&& other) noexcept
-{
+TBitField& TBitField::operator = (TBitField&& other) noexcept {
     if (this != &other) {
         delete[] data;
         size = other.size;
@@ -46,26 +42,22 @@ TBitField& TBitField::operator=(TBitField&& other) noexcept
     return *this;
 }
 
-TBitField& TBitField::operator=(const TBitField& other)
-{
+TBitField& TBitField::operator = (const TBitField& other) {
     if (this != &other) {
         delete[] data;
-        size = other.size;      
-        int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_; // вычисляем размер массива в int-ах
+        size = other.size;
+        int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
         data = new unsigned int[dataSize];
         for (int i = 0; i < dataSize; i++) {
-            data[i] = other.data[i]; // инициализируем массив нулями
+            data[i] = other.data[i]; // initialize the array with zeros
         }
     }
     return *this;
-
 }
 
-bool TBitField::operator==(const TBitField& other) const
-{
+bool TBitField::operator == (const TBitField& other) const {
     if (size != other.size) {
         return false;
-        
     }
     for (int i = 0; i < size; i++) {
         if (getBit(i) != other.getBit(i)) {
@@ -75,13 +67,11 @@ bool TBitField::operator==(const TBitField& other) const
     return true;
 }
 
-bool TBitField::operator!=(const TBitField& other) const
-{
+bool TBitField::operator != (const TBitField& other) const {
     return !(*this == other);
 }
 
-TBitField TBitField::operator&(const TBitField& other) const
-{
+TBitField TBitField::operator & (const TBitField& other) const {
     TBitField result(size);
     int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
     for (int i = 0; i < dataSize; i++) {
@@ -90,22 +80,23 @@ TBitField TBitField::operator&(const TBitField& other) const
     return result;
 }
 
-TBitField TBitField::operator|(const TBitField& other) const
-{
+TBitField TBitField::operator | (const TBitField& other) const {
     TBitField* result;
-    if (size < other.size) { result = new TBitField(other); }
-    else { result = new TBitField(*this); }
-    
- 
+    if (size < other.size) {
+        result = new TBitField(other);
+    }
+    else {
+        result = new TBitField(*this);
+    }
     for (int i = 0; i < std::min(getSize(), other.getSize()); i++) {
-        if (this->getBit(i)>0 || other.getBit(i) > 0) { result->setBit(i); }
-        //result->setBit(getBit(i) ? '1' : '0'/*this->getBit(i) | other.getBit(i)*/);
+        if (this->getBit(i) > 0 || other.getBit(i) > 0) {
+            result->setBit(i);
+        }
     }
     return *result;
 }
 
-TBitField TBitField::operator~() const
-{
+TBitField TBitField::operator~() const {
     TBitField result(size);
     int dataSize = (size + kBitsInByte_ - 1) / kBitsInByte_;
     for (int i = 0; i < dataSize; i++) {
@@ -114,28 +105,26 @@ TBitField TBitField::operator~() const
     return result;
 }
 
-TBitField::~TBitField()
-{
+TBitField::~TBitField() {
     delete[] data;
 }
 
-void TBitField::setBit(int index)
-{
-    int intIndex = index / kBitsInByte_; // индекс int-а, в котором находится нужный бит
-    int bitIndex = index % kBitsInByte_; // индекс бита внутри int-а
-    data[intIndex] |= (1 << bitIndex); // устанавливаем бит
+void TBitField::setBit(int index) {
+    // index of the int where the required bit is located
+    int intIndex = index / kBitsInByte_;
+    int bitIndex = index % kBitsInByte_; // bit index within an int
+    data[intIndex] |= (1 << bitIndex); // set the bit
 }
 
-void TBitField::clearBit(int index)
-{
+void TBitField::clearBit(int index) {
     int intIndex = index / kBitsInByte_;
     int bitIndex = index % kBitsInByte_;
-    data[intIndex] &= ~(1 << bitIndex); // сбрасываем бит
+    data[intIndex] &= ~(1 << bitIndex); // return the bit value
 }
 
-bool TBitField::getBit(int index) const
-{
+bool TBitField::getBit(int index) const {
     int intIndex = index / kBitsInByte_;
     int bitIndex = index % kBitsInByte_;
-    return (data[intIndex] & (1 << bitIndex)) != 0; // возвращаем значение бита
+    // РІРѕР·РІСЂР°С‰Р°РµРј Р·РЅР°С‡РµРЅРёРµ Р±РёС‚Р°
+    return (data[intIndex] & (1 << bitIndex)) != 0;
 }
