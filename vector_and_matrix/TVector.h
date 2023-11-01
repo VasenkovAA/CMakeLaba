@@ -4,23 +4,33 @@
 
 /*
 RU:
-
-Класс TVector представляет собой шаблонный класс вектора, который может хранить элементы любого типа данных. Он содержит методы для добавления, удаления, изменения и доступа к элементам вектора. Класс TVector также обеспечивает динамическое выделение памяти для хранения элементов вектора, что позволяет ему изменять свой размер во время выполнения программы.
-Описание класса TVector
-Класс TVector имеет следующие методы:
-
-    TVector(): конструктор по умолчанию, создает пустой вектор.
-    TVector(int size): конструктор, создающий вектор заданного размера.
-    TVector(const TVector& other): конструктор копирования, создает копию другого вектора.
-    ~TVector(): деструктор, освобождает память, занятую вектором.
-    int Size() const: возвращает размер вектора.
-    bool Empty() const: возвращает true, если вектор пустой, и false в противном случае.
-    void Clear(): удаляет все элементы из вектора.
-    void PushBack(const T& value): добавляет элемент в конец вектора.
-    void PopBack(): удаляет последний элемент из вектора.
-    T& operator[](int index): возвращает ссылку на элемент вектора по индексу.
-    const T& operator[](int index) const: возвращает константную ссылку на элемент вектора по индексу.
-
+Данный код представляет собой реализацию шаблонного класса TVector, который представляет собой динамический массив. Каждая функция и переменная имеет свою роль в работе класса:
+TVector(): конструктор по умолчанию, создает пустой массив.
+TVector(size_t size): конструктор, создающий массив заданного размера и заполняющий его значениями по умолчанию.
+TVector(const TVector<T>& other): конструктор копирования, создает копию переданного массива.
+TVector(TVector<T>&& other) noexcept: конструктор перемещения, перемещает данные из переданного массива в новый массив.
+*TVector(const T data, size_t size)**: конструктор, создающий массив заданного размера и заполняющий его значениями из переданного массива.
+~TVector(): деструктор, освобождает память, занятую массивом.
+T& operator[](size_t index): оператор доступа к элементу массива по индексу.
+const T& operator[](size_t index) const: оператор доступа к элементу массива по индексу (константная версия).
+T& at(size_t index): функция доступа к элементу массива по индексу с проверкой выхода за границы массива.
+const T& at(size_t index) const: функция доступа к элементу массива по индексу с проверкой выхода за границы массива (константная версия).
+T& front(): функция доступа к первому элементу массива.
+const T& front() const: функция доступа к первому элементу массива (константная версия).
+T& back(): функция доступа к последнему элементу массива.
+const T& back() const: функция доступа к последнему элементу массива (константная версия).
+bool empty() const: функция, возвращающая true, если массив пустой, и false в противном случае.
+size_t size() const: функция, возвращающая размер массива.
+size_t capacity() const: функция, возвращающая ёмкость массива.
+void reserve(size_t new_capacity): функция, увеличивающая ёмкость массива до заданного значения.
+void clear(): функция, очищающая массив.
+void push_back(const T& value): функция, добавляющая элемент в конец массива.
+void resize(size_t new_size): функция, изменяющая размер массива.
+void swap(TVector<T>& other): функция, меняющая местами данные двух массивов.
+Переменные класса:
+size_t m_size: размер массива.
+size_t m_capacity: ёмкость массива.
+T m_data*: указатель на данные массива.
 */
 
 /*
@@ -45,10 +55,6 @@ The TVector class has the following methods:
 Translated with www.DeepL.com/Translator (free version)
 
 */
-
-
-
-
 
 #include <iostream>
 #define MAX_VECTOR_SIZE 1000
@@ -83,6 +89,7 @@ public:
     }
     ~TVector() {
         delete[] m_data;
+        m_data = nullptr;
     }
     TVector<T> operator+(const T& scalar) const {
         TVector<T> result(m_size);
@@ -203,17 +210,7 @@ public:
     size_t capacity() const {
         return m_capacity;
     }
-    void reserve(size_t new_capacity) {
-        if (new_capacity > m_capacity) {
-            T* new_data = new T[new_capacity];
-            for (size_t i = 0; i < m_size; i++) {
-                new_data[i] = m_data[i];
-            }
-            delete[] m_data;
-            m_data = new_data;
-            m_capacity = new_capacity;
-        }
-    }
+
 
 
     void clear() {
@@ -248,10 +245,18 @@ public:
         std::swap(m_data, other.m_data);
     }
 
-
-
-
 private:
+    void reserve(size_t new_capacity) {
+        if (new_capacity > m_capacity) {
+            T* new_data = new T[new_capacity];
+            for (size_t i = 0; i < m_size; i++) {
+                new_data[i] = m_data[i];
+            }
+            delete[] m_data;
+            m_data = new_data;
+            m_capacity = new_capacity;
+        }
+    }
     size_t m_size;
     size_t m_capacity;
     T* m_data;

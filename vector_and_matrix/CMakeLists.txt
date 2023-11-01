@@ -1,1 +1,1 @@
-create_executable_project(vector_and_matrix)
+create_project_lib(vector_and_matrix)

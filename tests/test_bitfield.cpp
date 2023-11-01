@@ -132,15 +132,20 @@ TEST(TBitField, equal) {
 	bf2.setBit(5);
 	EXPECT_EQ(bf1, bf2);
 }
-TEST(TBitField, double_set) {
+TEST(TBitField, correct_set_fo_allredy_set_bit) {
 	// Arrange & Act
 	TBitField bf1(10);
 	TBitField bf2(10);
 	// Assert
 	bf1.setBit(1);
 	bf1.setBit(1);
-	bf1.setBit(1);
+		bf1.setBit(2);
+		bf1.setBit(3);
 	bf2.setBit(1);
+	bf2.setBit(2);
+	bf2.setBit(3);
+
+
 	EXPECT_EQ(bf1, bf2);
 }
 TEST(TBitField, reset_0) {

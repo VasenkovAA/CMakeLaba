@@ -12,8 +12,10 @@ include(cmake/function.cmake)    # подхватываем функции, ре
 
 add_subdirectory(main)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем main
 add_subdirectory(bit_fild_and_set)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем set
+add_subdirectory(list)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем set
 add_subdirectory(vector_and_matrix)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем vector_and_matrix
-
+add_subdirectory(stack)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем stack
+add_subdirectory(string_parser)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем string_parser
 
 option(BTEST "build test?" ON)   # указываем подключаем ли google-тесты (ON или YES) или нет (OFF или NO)
 
