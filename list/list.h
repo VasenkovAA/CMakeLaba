@@ -1,4 +1,4 @@
-// Copirite 2023 Vasenkov Andrey
+﻿// Copirite 2023 Vasenkov Andrey
 #ifndef _LIST_H_
 #define _LIST_H_
 //#include <iostream>
@@ -189,19 +189,44 @@ public:
 		return (pTail_->getData());
 	}
 
-	bool checkS() {
-		TNode<T>* pNode1;
-		TNode<T>* pNode2;
-		return 0;
-
-
-
+	bool hasCycleByFloid() {
+		if (pHead_ == nullptr) {
+			return false;
+		}
+		TNode<T>* slow = pHead_;
+		TNode<T>* fast = pHead_->getNext();
+		while (fast != nullptr && fast->getNext() != nullptr) {
+			if (slow == fast) {
+				return true;
+			}
+			slow = slow->getNext();
+			fast = fast->getNext()->getNext();
+		}
+		return false;
 	}
-
-
-
-
-
+	bool hasCycleByHash() {
+		std::unordered_set<TNode<T>*> visited;
+		TNode<T>* currentNode = pHead_;
+		while (currentNode != nullptr) {
+			if (visited.count(currentNode) > 0) {
+				return true;
+			}
+			visited.insert(currentNode);
+			currentNode = currentNode->getNext();
+		}
+		return false;
+	}
+	bool hasCycleByRevers() {
+		TNode<T>* currentNode = pHead_;
+		TNode<T>* previousNode = nullptr;
+		while (currentNode != nullptr) {
+			TNode<T>* nextNode = currentNode->getNext();
+			currentNode->setNext(previousNode);
+			previousNode = currentNode;
+			currentNode = nextNode;
+		}
+		return (previousNode != pHead_);
+	}
 };
 
 
