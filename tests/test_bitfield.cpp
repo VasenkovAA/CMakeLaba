@@ -1,6 +1,6 @@
 #include "gtest.h"
 #include <climits>
-#include "..\bit_fild_and_set\bit_fild.h"
+#include "../bit_fild/bit_fild.h"
 
 TEST(TBitField, can_get_length) {
   // Arrange & Act

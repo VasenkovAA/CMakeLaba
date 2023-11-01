@@ -76,7 +76,7 @@ This is convenient and allows you to avoid errors when working with class object
 */
 
 #include <iostream>
-#include "..\bit_fild_and_set\bit_fild.h"
+#include "../bit_fild/bit_fild.h"
 
 class TSet {
 private:

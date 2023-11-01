@@ -30,6 +30,8 @@ public:
 			delete currentNode;
 			currentNode = nextNode;
 		}
+		pTail_ = nullptr;
+		pHead_ = nullptr;
 	}
 
 	void push_back(const T& data) {

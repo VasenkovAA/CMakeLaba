@@ -1,7 +1,7 @@
 
 #include <gtest.h>
 #include <climits>
-#include "..\bit_fild_and_set\set.h"
+#include "../set/set.h"
 
 TEST(TSet, can_combine_two_sets_of_equal_size)
 {

@@ -1,4 +1,4 @@
-#include "../vector_and_matrix/TVector.h"
+#include "../vector/TVector.h"
 #include "../gtest/gtest.h"
 
 TEST(TVector, can_create_vector_with_positive_length) {
