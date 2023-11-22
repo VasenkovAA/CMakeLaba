@@ -34,7 +34,6 @@ int checkCorrectString(std::string str) {
 
 			}
 
-
 		}
 	}
 	if (stack.empty()) { return -1; }
