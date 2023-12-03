@@ -1,6 +1,6 @@
 #include"../string_parser/string_parser.h"
 #include "../gtest/gtest.h"
-//
+
 TEST(StringParserFunction, CorrectTest) {
 	string str = "()((()))";
 	int i = -1;

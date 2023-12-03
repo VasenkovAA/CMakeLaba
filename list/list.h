@@ -191,6 +191,36 @@ public:
 		return (pTail_->getData());
 	}
 
+	int getIndex(T& data_) {
+		TNode<T>* node = pHead_;
+		int i = 0;
+		if (count_ == 0) { return -1; }
+		while (node->getNext() != nullptr) {
+			if (node->getData() == data_) { return i; };
+			node = node->getNext();
+			i++;
+		}
+		return -1;
+	}
+	T& getData(int index) {
+		if (index > count_) {
+
+			throw std::logic_error("index exceeded the length of the list");
+		}
+		if (index == 0) {
+			
+			return pHead_->getData();
+		}
+		if (index == count_) {
+			
+			return pTail_->getData();
+		}
+		TNode<T>* currentNode = pHead_;
+		for (unsigned int i = 0; i < index - 1; i++) {
+			return (currentNode->getData());
+			
+		}
+	}
 	bool hasCycleByFloid() {
 		if (pHead_ == nullptr) {
 			return false;

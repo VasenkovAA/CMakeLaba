@@ -1,264 +1,183 @@
-#ifndef _TVECTOR_H_
+п»ї#ifndef _TVECTOR_H_
 #define _TVECTOR_H_
 // Copyright 2023 Vasenkov Andrey
 
-/*
-RU:
-Данный код представляет собой реализацию шаблонного класса TVector, который представляет собой динамический массив. Каждая функция и переменная имеет свою роль в работе класса:
-TVector(): конструктор по умолчанию, создает пустой массив.
-TVector(size_t size): конструктор, создающий массив заданного размера и заполняющий его значениями по умолчанию.
-TVector(const TVector<T>& other): конструктор копирования, создает копию переданного массива.
-TVector(TVector<T>&& other) noexcept: конструктор перемещения, перемещает данные из переданного массива в новый массив.
-*TVector(const T data, size_t size)**: конструктор, создающий массив заданного размера и заполняющий его значениями из переданного массива.
-~TVector(): деструктор, освобождает память, занятую массивом.
-T& operator[](size_t index): оператор доступа к элементу массива по индексу.
-const T& operator[](size_t index) const: оператор доступа к элементу массива по индексу (константная версия).
-T& at(size_t index): функция доступа к элементу массива по индексу с проверкой выхода за границы массива.
-const T& at(size_t index) const: функция доступа к элементу массива по индексу с проверкой выхода за границы массива (константная версия).
-T& front(): функция доступа к первому элементу массива.
-const T& front() const: функция доступа к первому элементу массива (константная версия).
-T& back(): функция доступа к последнему элементу массива.
-const T& back() const: функция доступа к последнему элементу массива (константная версия).
-bool empty() const: функция, возвращающая true, если массив пустой, и false в противном случае.
-size_t size() const: функция, возвращающая размер массива.
-size_t capacity() const: функция, возвращающая ёмкость массива.
-void reserve(size_t new_capacity): функция, увеличивающая ёмкость массива до заданного значения.
-void clear(): функция, очищающая массив.
-void push_back(const T& value): функция, добавляющая элемент в конец массива.
-void resize(size_t new_size): функция, изменяющая размер массива.
-void swap(TVector<T>& other): функция, меняющая местами данные двух массивов.
-Переменные класса:
-size_t m_size: размер массива.
-size_t m_capacity: ёмкость массива.
-T m_data*: указатель на данные массива.
-*/
-
-/*
-ENG:
-
-The TVector class is a template vector class that can store elements of any data type. It contains methods for adding, deleting, modifying and accessing vector elements. The TVector class also provides dynamic memory allocation for storing vector elements, allowing it to change its size during program execution.
-TVector class description
-The TVector class has the following methods:
-
-    TVector(): default constructor, creates an empty vector.
-    TVector(int size): constructor, creates a vector of the given size.
-    TVector(const TVector& other): copy constructor, creates a copy of another vector.
-    ~TVector(): destructor, frees the memory occupied by the vector.
-    int Size() const: returns the size of the vector.
-    bool Empty() const: returns true if the vector is empty and false otherwise.
-    void Clear(): removes all elements from the vector.
-    void PushBack(const T& value): adds an element to the end of the vector.
-    void PopBack(): removes the last element from the vector.
-    T& operator[](int index): returns a reference to an element of the vector by index.
-    const T& operator[](int index) const: returns a constant reference to the element of the vector by index.
-
-Translated with www.DeepL.com/Translator (free version)
-
-*/
-
+const int MAX_VECTOR_SIZE = 100000000;
 #include <iostream>
-#define MAX_VECTOR_SIZE 1000
-using namespace std;
-template <typename T>
-class TVector {
-public:
+#include <string>
+#include <assert.h>
 
-    TVector() : m_size(0), m_capacity(0), m_data(nullptr) {}
-    TVector(size_t size) : m_size(size), m_capacity(size), m_data(new T[size]) {
-        if (size > MAX_VECTOR_SIZE) {
-            throw std::out_of_range("Vector size exceeds maximum allowed size");
-        }
+template<class T>
+class TVector;
+template<class T>
+std::istream& operator>>(std::istream& istr, TVector<T>& v);
+template<class T>
+std::ostream& operator<<(std::ostream& ostr, const TVector<T>& v);
+
+template<class T>
+class TVector {
+protected:
+    size_t _size;
+    T* pMem;
+public:
+    TVector() :_size(0), pMem(nullptr) {};
+    TVector(size_t sz) : _size(sz) {
+        if (sz == 0)
+            throw std::length_error("Vector size should be greater than zero");
+        if (sz > MAX_VECTOR_SIZE)
+            throw std::length_error("Vector size cannot be greater than MAX_VECTOR_SIZE = " + std::to_string(MAX_VECTOR_SIZE));
+        if (sz < 0)
+            throw std::length_error("Vector size cannot be less than zero");
+        if (sz == 0) { pMem = nullptr; return; }
+        pMem = new T[sz];
     }
-    TVector(const TVector<T>& other) : m_size(other.m_size), m_capacity(other.m_capacity), m_data(new T[other.m_capacity]) {
-        for (size_t i = 0; i < m_size; i++) {
-            m_data[i] = other.m_data[i];
-        }
+    TVector(T* data, size_t sz) : _size(sz) {
+        // ГҐГ№ГҐ Г®Г¤ГЁГ­ Г±ГЇГ®Г±Г®ГЎ ГўГўГ®Г¤Г  ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГ©
+        assert(data != nullptr && "TVector constructor requires non-nullptr argument.");
+        pMem = new T[sz];
+        // Г¤Г«Гї Г¬Г Г±Г±ГЁГўГ®Гў Г¬Г®Г¦Г­Г® ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј std-ГґГіГ­ГЄГ¶ГЁГЁ Г± ГіГ±Г«Г®ГўГЁГҐГ¬, Г·ГІГ® ГўГ» Г§Г­Г ГҐГІГҐ ГЄГ ГЄ Г®Г­ГЁ ГІГ Г¬ Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г»!
+        std::copy(data, data + sz, pMem);
     }
-    TVector(TVector<T>&& other) noexcept : m_size(other.m_size), m_capacity(other.m_capacity), m_data(other.m_data) {
-        other.m_size = 0;
-        other.m_capacity = 0;
-        other.m_data = nullptr;
+
+    TVector(const TVector& v) : _size(v._size) {
+        pMem = new T[v._size];
+        std::copy(v.pMem, v.pMem + _size, pMem);
     }
-    TVector(const T* data, size_t size) : m_size(size), m_capacity(size), m_data(new T[size]) {
-        if (size > MAX_VECTOR_SIZE) {
-            throw std::out_of_range("Vector size exceeds maximum allowed size");
-        }
-        for (size_t i = 0; i < size; i++) {
-            m_data[i] = data[i];
-        }
+
+    TVector(TVector&& v) noexcept : _size(0), pMem(nullptr) {
+        std::swap(v.pMem, pMem);
+        std::swap(v._size, _size);
     }
+
     ~TVector() {
-        delete[] m_data;
-        m_data = nullptr;
+        delete[] pMem;
+        pMem = nullptr;
     }
-    TVector<T> operator+(const T& scalar) const {
-        TVector<T> result(m_size);
-        for (size_t i = 0; i < m_size; i++) {
-            result[i] = m_data[i] + scalar;
-        }
-        return result;
-    }
-    TVector<T> operator-(const T& scalar) const {
-        TVector<T> result(m_size);
-        for (size_t i = 0; i < m_size; i++) {
-            result[i] = m_data[i] - scalar;
-        }
-        return result;
-    }
-    TVector<T>& operator=(const TVector<T>& other) {
-        if (this != &other) {
-            delete[] m_data;
-            m_size = other.m_size;
-            m_capacity = other.m_capacity;
-            m_data = new T[m_capacity];
-            for (size_t i = 0; i < m_size; i++) {
-                m_data[i] = other.m_data[i];
-            }
-        }
+
+    TVector& operator=(const TVector& v) {
+        if (this == &v) { return *this; }
+        _size = v._size;
+        pMem = new T[_size];
+        std::copy(v.pMem, v.pMem + _size, pMem);
         return *this;
     }
-    TVector<T>& operator=(TVector<T>&& other) noexcept {
-        if (this != &other) {
-            delete[] m_data;
-            m_size = other.m_size;
-            m_capacity = other.m_capacity;
-            m_data = other.m_data;
-            other.m_size = 0;
-            other.m_capacity = 0;
-            other.m_data = nullptr;
-        }
+
+    TVector& operator=(TVector&& v) noexcept {
+        if (this == &v) { return *this; }
+        delete[] pMem;
+        pMem = nullptr;
+        _size = 0;
+        std::swap(pMem, v.pMem);
+        std::swap(_size, v._size);
         return *this;
     }
-    TVector<T> operator+(const TVector<T>& other) const {
-        if (m_size != other.m_size) {
-            throw std::invalid_argument("Vectors have different sizes");
-        }
-        TVector<T> result(m_size);
-        for (size_t i = 0; i < m_size; i++) {
-            result[i] = m_data[i] + other.m_data[i];
-        }
-        return result;
+
+    size_t size() const noexcept { return _size; }
+
+    // ГЁГ­Г¤ГҐГЄГ±Г Г¶ГЁГї
+    T& operator[](size_t ind) {
+        return pMem[ind];
     }
-    TVector<T> operator*(const T& scalar) const {
-        TVector<T> result(m_size);
-        for (size_t i = 0; i < m_size; i++) {
-            result[i] = m_data[i] * scalar;
-        }
-        return result;
+    const T& operator[](size_t ind) const {
+        return pMem[ind];
     }
-    TVector<T> operator-(const TVector<T>& other) const {
-        if (m_size != other.m_size) {
-            throw std::invalid_argument("Vectors have different sizes");
-        }
-        TVector<T> result(m_size);
-        for (size_t i = 0; i < m_size; i++) {
-            result[i] = m_data[i] - other.m_data[i];
-        }
-        return result;
+
+    // ГЁГ­Г¤ГҐГЄГ±Г Г¶ГЁГї Г± ГЄГ®Г­ГІГ°Г®Г«ГҐГ¬ - ГЇГ®Г·ГЁГІГ ГІГј Гў Г·ВёГ¬ Г°Г Г§Г­ГЁГ¶Г  ГЁ Г®ГЎГєГїГ±Г­ГЁГІГј ГЇГ°ГЁ Г±Г¤Г Г·ГҐ Г°Г ГЎГ®ГІГ»
+    T& at(size_t ind) {
+        if ((ind > _size - 1) || (ind < 0)) { throw std::out_of_range("Index out of range"); }
+        return pMem[ind];
     }
-    bool operator==(const TVector<T>& other) const {
-        if (m_size != other.m_size) {
-            return false;
-        }
-        for (size_t i = 0; i < m_size; i++) {
-            if (m_data[i] != other.m_data[i]) {
-                return false;
-            }
-        }
+    const T& at(size_t ind) const {
+        if ((ind > _size - 1) || (ind < 0)) { throw std::out_of_range("Index out of range"); }
+        return pMem[ind];
+    }
+
+    // Г±Г°Г ГўГ­ГҐГ­ГЁГҐ
+    bool operator==(const TVector& v) const noexcept {
+        if (_size != v._size) { return false; }
+        for (int i = 0; i < _size; i++) { if (pMem[i] != v.pMem[i]) { return false; } }
         return true;
     }
-    bool operator!=(const TVector<T>& other) const {
-        return !(*this == other);
-    }
-    T& operator[](size_t index) {
-        return m_data[index];
-    }
-    const T& operator[](size_t index) const {
-        return m_data[index];
-    }
-    T& at(size_t index) {
-        if (index >= m_size) {
-            throw std::out_of_range("Index out of range");
-        }
-        return m_data[index];
-    }
-    const T& at(size_t index) const {
-        if (index >= m_size) {
-            throw std::out_of_range("Index out of range");
-        }
-        return m_data[index];
-    }
-    T& front() {
-        return m_data[0];
-    }
-    const T& front() const {
-        return m_data[0];
-    }
-    T& back() {
-        return m_data[m_size - 1];
-    }
-    const T& back() const {
-        return m_data[m_size - 1];
+    bool operator!=(const TVector& v) const noexcept {
+        return !(*this == v);
     }
 
-    bool empty() const {
-        return m_size == 0;
+    TVector operator+(T val) {
+        TVector<T> tmp(*this);
+        for (int i = 0; i < _size; i++) {
+            tmp[i] = tmp[i] + val;
+        }
+        return tmp;
     }
-    size_t size() const {
-        return m_size;
+    TVector operator-(T val) {
+        TVector<T> tmp(*this);
+        for (int i = 0; i < _size; i++) {
+            tmp[i] = tmp[i] - val;
+        }
+        return tmp;
     }
-    size_t capacity() const {
-        return m_capacity;
+    TVector operator*(T val) {
+        TVector<T> tmp(*this);
+        for (int i = 0; i < _size; i++) {
+            tmp[i] = tmp[i] * val;
+        }
+        return tmp;
     }
 
-
-
-    void clear() {
-        delete[] m_data;
-        m_size = 0;
-        m_capacity = 0;
-        m_data = nullptr;
+    TVector operator+(const TVector& v) {
+        if (_size != v._size) { throw std::logic_error("Unequal dimensions"); }
+        TVector<T> tmp(*this);
+        for (int i = 0; i < _size; i++) {
+            tmp[i] = tmp[i] + v[i];
+        }
+        return tmp;
     }
-    
-    void push_back(const T& value) {
-        if (m_size == MAX_VECTOR_SIZE) {
-            throw std::out_of_range("Vector size exceeds maximum allowed size");
+    TVector operator-(const TVector& v) {
+        if (_size != v._size) { throw std::logic_error("Unequal dimensions"); }
+        TVector<T> tmp(*this);
+        for (int i = 0; i < _size; i++) {
+            tmp[i] = tmp[i] - v[i];
         }
-        if (m_size == m_capacity) {
-            reserve(m_capacity == 0 ? 1 : m_capacity * 2);
-        }
-        m_data[m_size++] = value;
-    }
-    void resize(size_t new_size) {
-        if (new_size > m_capacity) {
-            reserve(new_size);
-        }
-        for (size_t i = m_size; i < new_size; i++) {
-            m_data[i] = T();
-        }
-        m_size = new_size;
+        return tmp;
     }
 
-    void swap(TVector<T>& other) {
-        std::swap(m_size, other.m_size);
-        std::swap(m_capacity, other.m_capacity);
-        std::swap(m_data, other.m_data);
+    // ГЇГ®Г·ГЁГІГ ГІГј Г® noexcept(noexcept(T())) - Г®ГЎГєГїГ±Г­ГЁГІГј Г­Г Г§Г­Г Г·ГҐГ­ГЁГҐ ГЇГ°ГЁ Г±Г¤Г Г·ГҐ
+    T operator*(const TVector& v) noexcept(T()) {
+        if (_size != v._size) { throw std::logic_error("Unequal dimensions"); }
+        if (_size == v._size == 0) { throw std::logic_error("null sized vectore"); }
+        T tmp = (*this)[0] * v[0];
+        for (int i = 1; i < _size; i++) {
+            tmp = tmp + v[i] * (*this)[i];
+        }
+        return tmp;
     }
 
-private:
-    void reserve(size_t new_capacity) {
-        if (new_capacity > m_capacity) {
-            T* new_data = new T[new_capacity];
-            for (size_t i = 0; i < m_size; i++) {
-                new_data[i] = m_data[i];
-            }
-            delete[] m_data;
-            m_data = new_data;
-            m_capacity = new_capacity;
-        }
+    friend void swap(TVector& lhs, TVector& rhs) noexcept;
+
+    // ГўГўГ®Г¤/ГўГ»ГўГ®Г¤
+    friend std::istream& operator>> <T>(std::istream& istr, TVector& v);
+    friend std::ostream& operator<< <T>(std::ostream& ostr, const TVector& v);
+};
+
+template<class T>
+void swap(TVector<T>& lhs, TVector<T>& rhs) noexcept {
+    std::swap(lhs._size, rhs._size);
+    std::swap(lhs.pMem, rhs.pMem);
+}
+
+// ГўГўГ®Г¤/ГўГ»ГўГ®Г¤
+template<class T>
+std::istream& operator>>(std::istream& istr, TVector<T>& v) {
+    for (size_t i = 0; i < v._size; i++)
+        istr >> v[i];
+    return istr;
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream& ostr, const TVector<T>& v) {
+    for (size_t i = 0; i < v._size; i++) {
+        ostr << v.pMem[i] << ' ';
     }
-    size_t m_size;
-    size_t m_capacity;
-    T* m_data;
-}; 
+    return ostr;
+}
 #endif 
