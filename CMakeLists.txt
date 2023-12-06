@@ -21,6 +21,7 @@ add_subdirectory(string_parser)           # подключаем дополни�
 add_subdirectory(dispoint_sets_union)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем dispoint_sets_union
 add_subdirectory(maze)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем maze
 
+add_subdirectory(ilands_count)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем ilands_count
 
 option(BTEST "build test?" ON)   # указываем подключаем ли google-тесты (ON или YES) или нет (OFF или NO)
 

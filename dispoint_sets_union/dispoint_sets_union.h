@@ -1,7 +1,7 @@
 #ifndef _DISPOINT_SETS_UNION_H_
 #define _DISPOINT_SETS_UNION_H_
 #include <iostream>
-
+#include <vector>
 #define CDispointSetsUnion_MaxSize 5000
 
 class CDispointSetsUnion {
@@ -49,6 +49,16 @@ public:
     size_t getCount() {
         return ItemsCount;
     };
+
+    size_t getCountGroops() {
+        size_t count = 0;
+        for (int i = 0; i < ItemsCount; i++) {
+            if (parent[i] == i)
+                count++;
+        }
+            return count;
+    
+    }
 
 private:
     size_t ItemsCount;
